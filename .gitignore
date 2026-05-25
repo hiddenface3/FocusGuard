@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+tts_cache/
+analytics.json
+config.json
+.vscode/
