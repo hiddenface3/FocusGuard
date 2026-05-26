@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FocusGuard</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 320px;
+      background: #0a0a14;
+      color: #f1f5f9;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 13px;
+      padding: 0 0 16px 0;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header img { width: 28px; height: 28px; border-radius: 6px; }
+    .header-text h1 { font-size: 15px; font-weight: 700; color: white; }
+    .header-text p  { font-size: 11px; color: rgba(255,255,255,0.7); }
+
+    /* Cards */
+    .card {
+      margin: 10px 12px 0;
+      background: #11112a;
+      border: 1px solid #1e1e42;
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+
+    .card-label {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #64748b;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    /* Connection status */
+    .status-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot.green  { background: #10b981; box-shadow: 0 0 6px #10b981; }
+    .dot.red    { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+    .dot.yellow { background: #f59e0b; }
+
+    .status-text { font-weight: 600; font-size: 13px; }
+    .status-text.green  { color: #10b981; }
+    .status-text.red    { color: #ef4444; }
+    .status-text.yellow { color: #f59e0b; }
+
+    /* URL row */
+    .url-box {
+      background: #0d0d22;
+      border: 1px solid #1e1e42;
+      border-radius: 7px;
+      padding: 8px 10px;
+      font-size: 11px;
+      color: #94a3b8;
+      word-break: break-all;
+      min-height: 32px;
+      line-height: 1.5;
+    }
+    .url-box.blocked { border-color: #f59e0b; color: #fcd34d; }
+    .url-box.empty   { color: #475569; font-style: italic; }
+
+    /* Match badge */
+    .match-badge {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 10.5px;
+      font-weight: 700;
+    }
+    .match-badge.blocked  { background: #78350f; color: #fcd34d; }
+    .match-badge.safe     { background: #064e3b; color: #6ee7b7; }
+    .match-badge.no-focus { background: #1e1e42; color: #64748b; }
+
+    /* Footer hint */
+    .footer {
+      margin: 10px 12px 0;
+      font-size: 10.5px;
+      color: #475569;
+      line-height: 1.5;
+      text-align: center;
+    }
+    .footer a { color: #8b5cf6; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="icons/icon48.png" alt="FocusGuard" />
+    <div class="header-text">
+      <h1>FocusGuard</h1>
+      <p>Browser monitor active</p>
+    </div>
+  </div>
+
+  <!-- Connection Status -->
+  <div class="card">
+    <div class="card-label">Desktop App Connection</div>
+    <div class="status-row">
+      <div class="dot yellow" id="conn-dot"></div>
+      <span class="status-text yellow" id="conn-text">Checking...</span>
+    </div>
+  </div>
+
+  <!-- Active Tab -->
+  <div class="card">
+    <div class="card-label">Active Tab URL</div>
+    <div class="url-box empty" id="url-box">No active tab detected</div>
+    <span class="match-badge no-focus" id="match-badge">–</span>
+  </div>
+
+  <p class="footer">
+    FocusGuard detects blocked sites when this tab is in focus.<br/>
+    Make sure the desktop app is running.
+  </p>
+
+  <script src="popup.js"></script>
+</body>
+</html>

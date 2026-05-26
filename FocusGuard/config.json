@@ -1,0 +1,115 @@
+{
+  "bad_apps": [
+    {
+      "keywords": [
+        "instagram.com",
+        "instagram"
+      ],
+      "name": "Instagram",
+      "type": "browser"
+    },
+    {
+      "keywords": [
+        "facebook.com",
+        "facebook"
+      ],
+      "name": "Facebook",
+      "type": "browser"
+    },
+    {
+      "keywords": [
+        "twitter.com",
+        "x.com"
+      ],
+      "name": "Twitter / X",
+      "type": "browser"
+    },
+    {
+      "keywords": [
+        "tiktok.com",
+        "tiktok"
+      ],
+      "name": "TikTok",
+      "type": "browser"
+    },
+    {
+      "keywords": [
+        "reddit.com",
+        "reddit"
+      ],
+      "name": "Reddit",
+      "type": "browser"
+    },
+    {
+      "keywords": [
+        "netflix.com",
+        "netflix"
+      ],
+      "name": "Netflix",
+      "type": "browser"
+    },
+    {
+      "keywords": [
+        "twitch.tv",
+        "twitch"
+      ],
+      "name": "Twitch",
+      "type": "browser"
+    },
+    {
+      "keywords": [
+        "qqplayer.exe"
+      ],
+      "name": "media",
+      "type": "process"
+    },
+    {
+      "keywords": [
+        "msedge.exe"
+      ],
+      "name": "edge",
+      "type": "process"
+    },
+    {
+      "keywords": [
+        "https://www.youtube.com"
+      ],
+      "name": "yt",
+      "type": "browser"
+    }
+  ],
+  "good_apps": [
+    {
+      "keywords": [
+        "code.exe"
+      ],
+      "name": "VS Code",
+      "type": "process"
+    },
+    {
+      "keywords": [
+        "notion.so"
+      ],
+      "name": "Notion",
+      "type": "browser"
+    },
+    {
+      "keywords": [
+        "docs.google.com"
+      ],
+      "name": "Docs",
+      "type": "browser"
+    }
+  ],
+  "bad_phrases": [
+    "Hey! Stop wasting time get back."
+  ],
+  "good_phrases": [
+    "Great job! Keep up the good work.",
+    "You are being very productive. Well done!",
+    "Excellent focus."
+  ],
+  "reminder_interval": 1,
+  "tts_voice": "en-US-AriaNeural",
+  "enabled": true
+}
