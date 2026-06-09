@@ -108,7 +108,7 @@ def main():
         QMenu::separator { height: 1px; background: #1e1e42; margin: 4px 8px; }
     """)
 
-    open_action = menu.addAction("⚙️  Open Settings")
+    open_action = menu.addAction("📊  Open Dashboard")
     menu.addSeparator()
 
     toggle_action = menu.addAction("⏸️  Pause Protection")
@@ -200,24 +200,20 @@ def main():
     
     # Fire off a background task to pre-generate all possible phrases
     voice = current_config.get("tts_voice", "en-US-AriaNeural")
+    use_htts = current_config.get("use_htts", False)
+    use_gemini = current_config.get("use_gemini", False)
+    use_kokoro = current_config.get("use_kokoro", False)
+    gemini_api_key = current_config.get("gemini_api_key", "")
     all_phrases = current_config.get("bad_phrases", []) + current_config.get("good_phrases", [])
-    tts.prepare_many(all_phrases, voice)
+    tts.prepare_many(all_phrases, voice, use_htts, use_gemini, use_kokoro, gemini_api_key)
 
     # ── Start monitoring ──────────────────────────────────────────────────────
     monitor.start()
 
-    # Show settings on first launch if no config file exists
-    import os
-    from config import CONFIG_FILE
-    if not os.path.exists(CONFIG_FILE):
-        win.show()
-    else:
-        tray.showMessage(
-            "FocusGuard is running 🛡️",
-            "FocusGuard is protecting you in the background.\nClick the tray icon to open settings.",
-            QSystemTrayIcon.MessageIcon.Information,
-            3000,
-        )
+    # Always show settings window on launch for easy configuration and testing
+    win.show()
+    win.raise_()
+    win.activateWindow()
 
     sys.exit(app.exec())
 

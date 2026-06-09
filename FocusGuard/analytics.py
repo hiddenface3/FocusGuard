@@ -25,8 +25,25 @@ class AnalyticsManager:
                 print(f"[Analytics] Load error: {e}")
         return {}
 
+    def _prune(self):
+        """Keep only the last 30 days of data to limit file size."""
+        from datetime import datetime, timedelta
+        cutoff = datetime.now() - timedelta(days=30)
+        to_delete = []
+        for date_str in self._data:
+            try:
+                date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+                if date_obj < cutoff:
+                    to_delete.append(date_str)
+            except ValueError:
+                # Keep keys that do not match date format
+                pass
+        for date_str in to_delete:
+            del self._data[date_str]
+
     def _save(self):
         try:
+            self._prune()
             with open(ANALYTICS_FILE, "w", encoding="utf-8") as f:
                 json.dump(self._data, f, indent=2)
             self._last_save = time.time()
@@ -54,7 +71,23 @@ class AnalyticsManager:
     def get_today_stats(self) -> dict:
         """Return analytics for today."""
         today = datetime.now().strftime("%Y-%m-%d")
-        return self._data.get(today, {"good": {}, "bad": {}})
+        return self.get_stats_for_date(today)
+
+    def get_stats_for_date(self, date_str: str) -> dict:
+        """Return analytics for a specific date."""
+        return self._data.get(date_str, {"good": {}, "bad": {}})
+
+    def get_available_dates(self) -> list[str]:
+        """Return a sorted list of all dates with logged analytics (newest first)."""
+        dates = []
+        for key in self._data.keys():
+            try:
+                datetime.strptime(key, "%Y-%m-%d")
+                dates.append(key)
+            except ValueError:
+                pass
+        dates.sort(reverse=True)
+        return dates
 
     def flush(self):
         """Force save to disk."""

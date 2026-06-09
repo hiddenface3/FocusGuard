@@ -99,17 +99,33 @@
       ],
       "name": "Docs",
       "type": "browser"
+    },
+    {
+      "keywords": [
+        "antigravity ide.exe"
+      ],
+      "name": "codding",
+      "type": "process"
     }
   ],
   "bad_phrases": [
-    "Hey! Stop wasting time get back."
+    "stop wasting time please, look at your self look at your family you have no time left, no one is going to save you",
+    "just keep doing what you are doing it the best thing and you just need to be consistant this time so do it otherwise you are going down",
+    "chose for yourself the pain of progress or the pain faliuar",
+    "the pain of progresss or the the pain of regret which one you chose"
   ],
   "good_phrases": [
-    "Great job! Keep up the good work.",
-    "You are being very productive. Well done!",
-    "Excellent focus."
+    "what if the things you are doing worked out your life will change so much i cannot imagen the joy of that movement.",
+    "just keep going and the results will comeup you need to just keep going",
+    "think about it the things you are doing right now doest it matter or you are just filling time with it and thinking you are doing work"
   ],
   "reminder_interval": 1,
-  "tts_voice": "en-US-AriaNeural",
-  "enabled": true
+  "tts_voice": "kokoro-af_heart",
+  "enabled": true,
+  "use_htts": false,
+  "use_gemini": false,
+  "use_kokoro": true,
+  "gemini_voice": "Puck",
+  "gemini_api_key": "",
+  "autostart": true
 }

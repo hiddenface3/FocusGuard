@@ -111,9 +111,9 @@ class BrowserTabServer:
             app.router.add_post(   "/tab",    self._post_tab)
             app.router.add_get(    "/status", self._get_status)
 
-            runner = web.AppRunner(app, access_log=None)
-            self._loop.run_until_complete(runner.setup())
-            site = web.TCPSite(runner, "127.0.0.1", self.port, reuse_address=True)
+            self._runner = web.AppRunner(app, access_log=None)
+            self._loop.run_until_complete(self._runner.setup())
+            site = web.TCPSite(self._runner, "127.0.0.1", self.port, reuse_address=True)
             self._loop.run_until_complete(site.start())
             print(f"[BrowserServer] Listening on http://127.0.0.1:{self.port}")
             self._loop.run_forever()
@@ -125,4 +125,12 @@ class BrowserTabServer:
 
     def stop(self):
         if self._loop and self._loop.is_running():
-            self._loop.call_soon_threadsafe(self._loop.stop)
+            async def _do_stop():
+                try:
+                    if hasattr(self, '_runner') and self._runner:
+                        await self._runner.cleanup()
+                except Exception as e:
+                    print(f"[BrowserServer] Teardown error: {e}")
+                finally:
+                    self._loop.stop()
+            asyncio.run_coroutine_threadsafe(_do_stop(), self._loop)

@@ -33,7 +33,65 @@ DEFAULT_CONFIG = {
     "reminder_interval": 2,        # minutes
     "tts_voice": "en-US-AriaNeural",
     "enabled": True,
+    "use_htts": False,
+    "use_gemini": False,
+    "use_kokoro": False,
+    "gemini_voice": "Puck",
+    "gemini_api_key": "",
+    "autostart": False,
 }
+
+
+def is_autostart_enabled() -> bool:
+    """Check if the app is currently configured to run on startup in the registry."""
+    import winreg
+    key_path = r"Software\Microsoft\Windows\CurrentVersion\Run"
+    app_name = "FocusGuard"
+    try:
+        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, key_path, 0, winreg.KEY_READ)
+        try:
+            winreg.QueryValueEx(key, app_name)
+            winreg.CloseKey(key)
+            return True
+        except FileNotFoundError:
+            winreg.CloseKey(key)
+            return False
+    except Exception:
+        return False
+
+
+def set_autostart(enabled: bool) -> bool:
+    """Register/unregister the app in HKEY_CURRENT_USER Run registry key."""
+    import winreg
+    import sys
+    import os
+    
+    key_path = r"Software\Microsoft\Windows\CurrentVersion\Run"
+    app_name = "FocusGuard"
+    
+    try:
+        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, key_path, 0, winreg.KEY_SET_VALUE)
+        if enabled:
+            # Get the path to pythonw.exe or python.exe
+            exec_path = sys.executable
+            # If it's python.exe, try to use pythonw.exe to prevent terminal window popup
+            if exec_path.lower().endswith("python.exe"):
+                exec_path = exec_path[:-10] + "pythonw.exe"
+            
+            script_path = os.path.abspath(sys.argv[0])
+            # Use absolute path to launcher.py / main.py
+            cmd = f'"{exec_path}" "{script_path}"'
+            winreg.SetValueEx(key, app_name, 0, winreg.REG_SZ, cmd)
+        else:
+            try:
+                winreg.DeleteValue(key, app_name)
+            except FileNotFoundError:
+                pass
+        winreg.CloseKey(key)
+        return True
+    except Exception as e:
+        print(f"[Autostart] Error setting registry key: {e}")
+        return False
 
 
 def load_config() -> dict:
@@ -56,6 +114,9 @@ def load_config() -> dict:
             merged.update(data)
         except Exception as e:
             print(f"[Config] Load error: {e}")
+            
+    # Sync with actual registry state
+    merged["autostart"] = is_autostart_enabled()
     return merged
 
 

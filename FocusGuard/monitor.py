@@ -115,6 +115,10 @@ class WindowMonitor(QThread):
             bad_phrases   = cfg.get("bad_phrases", ["Please go back to your work!"])
             good_phrases  = cfg.get("good_phrases", ["Great job! Keep up the good work."])
             voice         = cfg.get("tts_voice", "en-US-AriaNeural")
+            use_htts      = cfg.get("use_htts", False)
+            use_gemini    = cfg.get("use_gemini", False)
+            use_kokoro    = cfg.get("use_kokoro", False)
+            gemini_api_key = cfg.get("gemini_api_key", "")
 
             browser_url   = ""
             browser_title = ""
@@ -158,7 +162,7 @@ class WindowMonitor(QThread):
                     if not phrases:
                         phrases = ["Reminder!"]
                     phrase = random.choice(phrases)
-                    self.tts.speak(phrase, voice)
+                    self.tts.speak(phrase, voice, use_htts, use_gemini, use_kokoro, gemini_api_key)
             else:
                 if self._current_distraction is not None:
                     self._current_distraction = None
